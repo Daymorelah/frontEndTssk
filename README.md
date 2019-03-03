@@ -1,7 +1,7 @@
 # FrontEnd Tssk
 This repo contains a simple game written in React.js.
 
-### Demo Game
+### Game Demo
 ![](hackerbay_frontend.gif)
 ### TECHNOLOGIES
 This app was implemented using:
