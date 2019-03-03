@@ -34,6 +34,10 @@ export default {
           { loader: 'css-loader' }
         ],
       },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        use: ['file-loader'],
+      }
     ]
   },
   resolve: {

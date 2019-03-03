@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const GameBox = ({ num, KeyPressEvent }) => (
+const GameBox = ({ num, KeyPressEvent, position }) => (
   <div
     id={`boardSquare${num}`}
-    className=".game-box"
-    onKeyPress={event => KeyPressEvent(event, num)}
+    className="game-box"
+    onKeyDown={event => KeyPressEvent(event, num)}
     role="button"
     tabIndex="0"
+    data-position={position}
   />
 );
 
@@ -15,6 +16,7 @@ const GameBox = ({ num, KeyPressEvent }) => (
 GameBox.propTypes = {
   num: PropTypes.number.isRequired,
   KeyPressEvent: PropTypes.func.isRequired,
+  position: PropTypes.string.isRequired,
 };
 
 export default GameBox;

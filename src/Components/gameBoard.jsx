@@ -12,11 +12,11 @@ const GameBoard = ({ KeyPressEvent, width, height }) => {
           key={k}
           KeyPressEvent={KeyPressEvent}
           num={k}
+          position={`${i + 1},${j + 1}`}
         />
       );
     }
-    k += 1;
-    rows.push(<br key={k} />);
+    rows.push(<br key={`end-of-row-${i}`} />);
   }
   return (
     <div id="board">
