@@ -13,8 +13,8 @@ This app was implemented using:
  * install [Node js](https://nodejs.org/en/)
  * Clone the repository `https://github.com/Daymorelah/frontEndTssk.git` 
  * `CD` into the project directory
- * Run `npm install` to install dependencies
- * Run `npm start` to get the app started on your local machine.
+ * Run `yarn install` to install dependencies
+ * Run `yarn start` to get the app started on your local machine.
  
 ## Contributing
 * Fork this repository
