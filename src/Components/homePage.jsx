@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import GameBoard from './gameBoard';
 import princess from '../../styles/princess.jpeg';
 import mario from '../../styles/mario.jpeg';
+import {
+  moveDown, moveUp, moveLeft, moveRight
+} from './gameControls';
 
 class HomePage extends Component {
   state = {
@@ -15,16 +18,18 @@ class HomePage extends Component {
     this.shouldAskForBoardDimensions();
   }
 
+  /* eslint-disable no-alert */
   shouldAskForBoardDimensions = () => {
     this.setState({
-      width: parseInt(window.prompt('Please enter the width of the board'), 10),
-      height: parseInt(window.prompt('Please enter the height of the board'), 10)
+      width: parseInt(window.prompt('Please enter width of the board'), 10),
+      height: parseInt(window.prompt('Please enter height of the board'), 10)
     }, () => {
       const position = this.startGameHere();
       this.generatePicturesOnGameBoard(position);
       document.getElementById(`boardSquare${position}`).focus();
     });
   }
+  /* eslint-enable no-alert */
 
   /**
    * Checks to see if our player caught the horse on each move made
@@ -39,92 +44,12 @@ class HomePage extends Component {
   }
 
   /**
-  * moves our player one box to the right
-  */
-  moveUp = (currentRow, currentColumn) => {
-    // Check if we are at the extreme top of the game box
-    if (currentRow !== 1) {
-      const { width, numberOfMoves } = this.state;
-      const newPosition = (((currentRow - 2) * width) + currentColumn);
-      // Remove image at current position
-      document.getElementById(`boardSquare${newPosition + width}`)
-        .innerHTML = '';
-      // Add image at new position
-      document.getElementById(`boardSquare${newPosition}`)
-        .innerHTML = `<img src=${mario} id="mario" alt="mario" />`;
-      // Focus on the new position
-      document.getElementById(`boardSquare${newPosition}`).focus();
-      this.checkIfPlayerCaughtTheHorse(newPosition);
-      this.setState({ numberOfMoves: numberOfMoves + 1 });
-    }
-  }
-
-  /**
-   * moves our player one box down
-   */
-  moveDown = (currentRow, currentColumn) => {
-    const { height, width, numberOfMoves } = this.state;
-    // Check if we are at the extreme bottom of the game box
-    if (currentRow !== height) {
-      const newPosition = ((currentRow * width) + currentColumn);
-      // Remove image at current position
-      document.getElementById(`boardSquare${newPosition - width}`)
-        .innerHTML = '';
-      // Add image at new position
-      document.getElementById(`boardSquare${newPosition}`)
-        .innerHTML = `<img src=${mario} id="mario" alt="mario" />`;
-      // Focus on the new position
-      document.getElementById(`boardSquare${newPosition}`).focus();
-      this.checkIfPlayerCaughtTheHorse(newPosition);
-      this.setState({ numberOfMoves: numberOfMoves + 1 });
-    }
-  }
-
-  /**
-   * moves our player one box to the left
-   */
-  moveLeft = (currentRow, currentColumn) => {
-    // Check if we are at the extreme left of the game box
-    if (currentColumn !== 1) {
-      const { width, numberOfMoves } = this.state;
-      const newPosition = (((currentRow - 1) * width) + currentColumn) - 1;
-      // Remove image at current position
-      document.getElementById(`boardSquare${newPosition + 1}`).innerHTML = '';
-      // Add image at new position
-      document.getElementById(`boardSquare${newPosition}`)
-        .innerHTML = `<img src=${mario} id="mario" alt="mario" />`;
-      // Focus on the new position
-      document.getElementById(`boardSquare${newPosition}`).focus();
-      this.checkIfPlayerCaughtTheHorse(newPosition);
-      this.setState({ numberOfMoves: numberOfMoves + 1 });
-    }
-  }
-
-  /**
-   * moves our player one box to the right
-   */
-  moveRight = (currentRow, currentColumn) => {
-    const { width, numberOfMoves } = this.state;
-    // Check if we are at the extreme right of the game box
-    if (currentColumn !== width) {
-      const newPosition = (((currentRow - 1) * width) + currentColumn) + 1;
-      // Remove image at current position
-      document.getElementById(`boardSquare${newPosition - 1}`).innerHTML = '';
-      // Add image at new position
-      document.getElementById(`boardSquare${newPosition}`)
-        .innerHTML = `<img src=${mario} id="mario" alt="mario" />`;
-      // Focus on the new position
-      document.getElementById(`boardSquare${newPosition}`).focus();
-      this.checkIfPlayerCaughtTheHorse(newPosition);
-      this.setState({ numberOfMoves: numberOfMoves + 1 });
-    }
-  }
-
-  /**
    * Listens for and handles when the arrow keys are pressed
    */
   handleKeyPressEvent = (event) => {
-    const { generatedRandomNumbers } = this.state;
+    const {
+      generatedRandomNumbers, width, numberOfMoves, height
+    } = this.state;
     if (generatedRandomNumbers.length === 0) return;
     const CurrentBox = event.target;
     const currentRow = parseInt(CurrentBox.getAttribute('data-position')
@@ -133,16 +58,28 @@ class HomePage extends Component {
       .split(',')[1], 10);
     switch (event.keyCode) {
       case 37:
-        this.moveLeft(currentRow, currentColumn);
+        this.checkIfPlayerCaughtTheHorse(
+          moveLeft(currentRow, currentColumn, width)
+        );
+        this.setState({ numberOfMoves: numberOfMoves + 1 });
         break;
       case 38:
-        this.moveUp(currentRow, currentColumn);
+        this.checkIfPlayerCaughtTheHorse(
+          moveUp(currentRow, currentColumn, width, numberOfMoves)
+        );
+        this.setState({ numberOfMoves: numberOfMoves + 1 });
         break;
       case 39:
-        this.moveRight(currentRow, currentColumn);
+        this.checkIfPlayerCaughtTheHorse(
+          moveRight(currentRow, currentColumn, width)
+        );
+        this.setState({ numberOfMoves: numberOfMoves + 1 });
         break;
       case 40:
-        this.moveDown(currentRow, currentColumn);
+        this.checkIfPlayerCaughtTheHorse(
+          moveDown(currentRow, currentColumn, height, width)
+        );
+        this.setState({ numberOfMoves: numberOfMoves + 1 });
         break;
       default:
     }
