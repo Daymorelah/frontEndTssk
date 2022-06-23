@@ -58,7 +58,7 @@
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "^3.0.1",
     "jest": "24.0.0",
-    "jsdom": "13.2.0",
+    "jsdom": "16.5.0",
     "mocha": "5.2.0",
     "nock": "8.0.0",
     "redux-immutable-state-invariant": "1.2.3",
